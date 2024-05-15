@@ -1,0 +1,205 @@
+---
+title: "Ejemplos de ggplot2 y plotly"
+author: "Jenny Gonzalez"
+format: html
+toc: true
+lang: es
+theme: flaty
+---
+
+# Carga de paquetes
+
+```{r}
+#| label: carga-paquetes
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(DT)
+library(knitr)
+library(gapminder)
+```
+
+
+# Tablas de datos
+
+## mpg
+
+```{r}
+#| label: tabla-mpg
+
+mpg |>
+  datatable()
+# Tabla de datos de mpg
+mpg |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+```
+
+## diamonds
+
+```{r}
+#| label: tabla-diamonds
+diamonds |>
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+```
+
+## gapminder
+
+```{r}
+#| label: tabla-gapminder
+#| message: false
+#| warning: false
+
+# Tabla de datos gapminder
+gapminder |>
+filter(year == 2007) |> # filtro para el año 2007
+  datatable(
+    options = list(
+      pageLength = 5,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    ))
+```
+
+# Graficos
+
+## Sintaxis basica
+
+```{r}
+#| label: grafico-dispersion-mpg-1
+
+ggplot(data = mpg) + 
+ geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+Forma equivalente y mas usual
+
+```{r}
+#| label: grafico-dispersion-mpg-2
+
+mpg |> 
+  ggplot(aes(x = displ, y = hwy, color = class)) +
+   geom_point()
+```
+
+```{r}
+#| label: grafico-dispersion-cars
+
+plot(x = cars$speed, y = cars$dist)
+```
+
+Dibuje el grafico anterior con ggplot 2: 
+
+```{r}
+#| label: grafico-dispersion-ggplot2
+
+cars |>
+ ggplot(aes(x = speed, y = dist)) +
+   geom_point()
+```
+
+## Representacion de variables adicionales
+
+```{r}
+#| label: variables-adicionales-1
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# coloreado por tipo de automóvil
+# Variable representada mediante el color
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = class)) +
+  geom_point()
+```
+
+```{r}
+#| label: variables-adicionales-2
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# con formas de puntos correspondientes al tipo de automóvil
+mpg |>
+  ggplot(aes(x = displ, y = hwy, shape = class)) +
+  geom_point()
+```
+
+```{r}
+#| label: variables-adicionales-3
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# con formas y colores correspondientes al tipo de automóvil
+mpg |>
+  ggplot(aes(x = displ, y = hwy, shape = class, color = class)) +
+  geom_point() +
+  scale_shape_manual(values = c(0, 1, 2, 3, 4, 5, 6)) +
+  scale_color_manual(values = c("red", "blue", "green", "purple", "orange", "brown", "pink"))
+```
+
+```{r}
+#| label: variables-adicionales-4
+
+
+# Gráfico de dispersión de rendimiento en autopista vs rendimiento en ciudad
+# con tamaño de puntos correspondiente a la cilindrada
+mpg |>
+  ggplot(aes(x = hwy, y = cty, size = displ)) +
+  geom_point()
+```
+
+```{r}
+#| label: variables-adicionales-5
+
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# + curva de tendencia
+mpg |>
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth()
+```
+
+```{r}
+#| label: variables-adicionales-6
+
+
+# Gráfico de dispersión de cilindrada vs millas por galón en autopista
+# coloreado por tipo de tracción
+# + curva de tendencia
+mpg |>
+  ggplot(aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
